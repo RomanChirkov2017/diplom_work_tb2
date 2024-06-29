@@ -17,14 +17,18 @@ class EducationModule(models.Model):
 
 
 class Lesson(models.Model):
-    module = models.ForeignKey(EducationModule, on_delete=models.CASCADE, verbose_name="Образовательный модуль")
+    module = models.ForeignKey(
+        EducationModule, on_delete=models.CASCADE, verbose_name="Образовательный модуль"
+    )
     number = models.PositiveIntegerField(verbose_name="Порядковый номер урока")
     title = models.CharField(max_length=250, verbose_name="Название урока")
     description = models.TextField(verbose_name="Описание", **NULLABLE)
-    image = models.ImageField(upload_to="education/", verbose_name="Изображение", **NULLABLE)
+    image = models.ImageField(
+        upload_to="education/", verbose_name="Изображение", **NULLABLE
+    )
 
     def __str__(self):
-        return f'{self.module} - {self.title}'
+        return f"{self.module} - {self.title}"
 
     class Meta:
         verbose_name = "Урок"

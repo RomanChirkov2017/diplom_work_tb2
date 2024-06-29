@@ -3,17 +3,19 @@ from datetime import datetime
 import pytz
 from django.conf import settings
 from django.shortcuts import redirect
-
-from rest_framework.generics import CreateAPIView, RetrieveAPIView, ListAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework.generics import (CreateAPIView, DestroyAPIView,
+                                     ListAPIView, RetrieveAPIView,
+                                     UpdateAPIView)
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from users.models import User
-from users.serializers import UserSerializer, MyTokenObtainPairSerializer
+from users.serializers import MyTokenObtainPairSerializer, UserSerializer
 
 
 class UserCreateAPIView(CreateAPIView):
-    """ Эндпоинт для создания пользователя. """
+    """Эндпоинт для создания пользователя."""
+
     serializer_class = UserSerializer
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
@@ -25,7 +27,8 @@ class UserCreateAPIView(CreateAPIView):
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
-    """ Эндпоинт для создания токена. """
+    """Эндпоинт для создания токена."""
+
     serializer_class = MyTokenObtainPairSerializer
 
     def perform_authentication(self, request):
@@ -43,27 +46,30 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 
 class UserListAPIView(ListAPIView):
-    """ Эндпоинт просмотра списка всех пользователей. """
+    """Эндпоинт просмотра списка всех пользователей."""
+
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
 
 class UserUpdateAPIView(UpdateAPIView):
-    """ Эндпоинт изменения пользователя. """
+    """Эндпоинт изменения пользователя."""
+
     serializer_class = UserSerializer
     queryset = User.objects.all()
     permission_classes = [IsAuthenticated]
 
 
 class UserDestroyAPIView(DestroyAPIView):
-    """ Эндпоинт удаления пользователя. """
+    """Эндпоинт удаления пользователя."""
+
     serializer_class = UserSerializer
     queryset = User.objects.all()
     permission_classes = [IsAuthenticated]
 
 
 def user_verification(request, token):
-    """ Функция верификации пользователя. """
+    """Функция верификации пользователя."""
     user = User.objects.filter(verification_token=token).first()
     if user:
         user.is_active = True
